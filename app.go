@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"bufio"
 )
 
 func main() {
@@ -56,5 +57,26 @@ func broadcaster() {
 
 func handleConn(conn net.Conn) {
 	fmt.Println(conn)
+	ch := make(chan string) // 对外发送客户消息的通道
+	go clientWriter(conn, ch)
+	who := conn.RemoteAddr().String()
+	ch <- "Your are " + who
+	messages <- who + " has arrived"
+	entering <- ch
 
+	input := bufio.NewScanner(conn)
+	for input.Scan() {
+		messages <- who + ": " + input.Text()
+	}
+	// 注意, 忽略input.Err中可能的错误
+
+	leaving <- ch
+	messages <- who + " has left"
+	conn.Close()
+}
+
+func clientWriter(conn net.Conn, ch <-chan string) {
+	for msg := range ch {
+		fmt.Fprintln(conn, msg)	// 注意，忽略网络层面的错误
+	}
 }
