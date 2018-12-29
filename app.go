@@ -1,9 +1,9 @@
 package uzgo
 
 import (
+	"fmt"
 	"log"
 	"net"
-	"fmt"
 )
 
 func main() {
@@ -26,10 +26,22 @@ func main() {
 
 }
 
+// 广播器
+type client chan<- string // 对外发送消息的通道
+var (
+	entering = make(chan client)
+	leafing  = make(chan client)
+	messages = make(chan string) // 所有接收的客户消息
+)
+
 func broadcaster() {
+	clients := make(map[client]bool) // 所有连接的客户端
+	for {
+		select {}
+	}
 
 }
 
-func handleConn(conn) {
+func handleConn(conn net.Conn) {
 	fmt.Println(conn)
 }
