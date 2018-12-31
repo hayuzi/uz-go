@@ -1,4 +1,4 @@
-package uzgo
+package main
 
 import (
 	"fmt"
