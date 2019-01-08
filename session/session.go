@@ -13,7 +13,7 @@ import (
 // session manager
 // 定义一个全局的session管理器
 type Manager struct {
-	cookieName  string     // private cookiename
+	cookieName  string     // private cookieName
 	lock        sync.Mutex // protects session
 	provider    Provider
 	maxLifeTime int64
