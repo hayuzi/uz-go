@@ -1,13 +1,13 @@
-package main
+package uzgo
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net"
-	"bufio"
 )
 
-func main() {
+func runChatServer() {
 
 	// 启动
 	listener, err := net.Listen("tcp", "localhost:8000")
@@ -77,6 +77,6 @@ func handleConn(conn net.Conn) {
 
 func clientWriter(conn net.Conn, ch <-chan string) {
 	for msg := range ch {
-		fmt.Fprintln(conn, msg)	// 注意，忽略网络层面的错误
+		fmt.Fprintln(conn, msg) // 注意，忽略网络层面的错误
 	}
 }
